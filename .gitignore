@@ -57,3 +57,4 @@ config.h
 *.orig
 patches/
 dmenu
+stest
