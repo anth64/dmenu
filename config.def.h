@@ -15,6 +15,7 @@ static const char *colors[SchemeLast][2] = {
 	[SchemeNorm] = { "#bbbbbb", "#222222" },
 	[SchemeSel] = { "#eeeeee", "#005500" },
 	[SchemeOut] = { "#000000", "#00ffff" },
+	[SchemeCursor] = { "#222222", "#bbbbbb"},
 };
 
 static const unsigned int alphas[SchemeLast][2] = {
@@ -22,11 +23,24 @@ static const unsigned int alphas[SchemeLast][2] = {
 	[SchemeSel] = { OPAQUE, alpha },
 	[SchemeOut] = { OPAQUE, alpha },
 };
-/* -l option; if nonzero, dmenu uses vertical list with given number of lines */
-static unsigned int lines      = 0;
+/* -l and -g options; controls number of lines and columns in grid if > 0 */
+static unsigned int lines      = 6;
+static unsigned int columns    = 4;
 
 /*
  * Characters not considered part of a word while deleting words
  * for example: " /?\"&[]"
  */
 static const char worddelimiters[] = " ";
+
+/*
+ * -vi option; if nonzero, vi mode is always enabled and can be
+ * accessed with the global_esc keysym + mod mask
+ */
+static unsigned int vi_mode = 1;
+static unsigned int start_mode = 1;			/* mode to use when -vi is passed. 0 = insert mode, 1 = normal mode */
+static Key global_esc = { XK_Escape };	/* escape key when vi mode is not enabled explicitly */
+static Key quit_keys[] = {
+	/* keysym	modifier */
+	{ XK_q,		0 }
+};
