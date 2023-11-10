@@ -70,8 +70,9 @@ static Colormap cmap;
 
 #include "config.h"
 
-static int (*fstrncmp)(const char *, const char *, size_t) = strncmp;
-static char *(*fstrstr)(const char *, const char *) = strstr;
+static int (*fstrncmp)(const char *, const char *, size_t) = strncasecmp;
+static char * cistrstr(const char *s, const char *sub);
+static char *(*fstrstr)(const char *, const char *) = cistrstr;
 static void xinitvisual();
 
 static unsigned int
@@ -1028,6 +1029,9 @@ main(int argc, char *argv[])
 			using_vi_mode = start_mode;
 			global_esc.ksym = XK_Escape;
 			global_esc.state = 0;
+    } else if (!strcmp(argv[i], "-s")) { /* case-sensitive item matching */
+			fstrncmp = strncmp;
+			fstrstr = strstr;
 		} else if (i + 1 == argc)
 			usage();
 		/* these options take one argument */
